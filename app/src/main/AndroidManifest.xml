@@ -338,6 +338,22 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.spark.coinpaypddd.add_product.ProductListActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.spark.coinpaypddd.add_store.StoreListActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.spark.coinpaypddd.add_product.ProductDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.spark.coinpaypddd.add_store.StoreDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

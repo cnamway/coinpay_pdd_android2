@@ -46,6 +46,8 @@ import com.spark.coinpaypddd.LoginStatus;
 import com.spark.coinpaypddd.MyApplication;
 import com.spark.coinpaypddd.R;
 import com.spark.coinpaypddd.adapter.MainOrderAdapter;
+import com.spark.coinpaypddd.add_product.ProductListActivity;
+import com.spark.coinpaypddd.add_store.StoreListActivity;
 import com.spark.coinpaypddd.entity.PayData;
 import com.spark.coinpaypddd.entity.SystemEntity;
 import com.spark.coinpaypddd.entity.VisionEntity;
@@ -133,7 +135,6 @@ import static com.spark.modulebase.base.BaseConstant.SUCCESS_CODE;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_APP_NAME;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_SHOW;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_VOICE;
-import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_PAY_PASS;
 
 /**
  * 主页面
@@ -146,8 +147,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     ImageView ivOverTimeOrder;
     @BindView(R.id.ivBuy)
     ImageView ivBuy;
-    @BindView(R.id.tvPhone)
-    TextView tvPhone;
     @BindView(R.id.ivAssetEyeTrade)
     ImageView ivAssetEyeTrade;
     @BindView(R.id.tvAssetAmountTrade)
@@ -324,6 +323,12 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private double sumCny = 0;//保证金金额
     private ArrayList<Wallet> wallets = new ArrayList<>();
     private String coinId = "";
+    //累计佣金
+    private String rewardTotal;
+    //待结算佣金
+    private String noSettledReward;
+    //昨日佣金
+    private String rewardY;
 
     @Override
     protected int getActivityLayoutId() {
@@ -443,16 +448,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         if (currentUser != null) {
             if (StringUtils.isNotEmpty(currentUser.getRealName())) {
                 tvTitle.setText(currentUser.getRealName());
-            }
-            if (StringUtils.isNotEmpty(currentUser.getMobilePhone())) {
-                String phone = currentUser.getMobilePhone();
-                if (StringUtils.isNotEmpty(phone)) {
-                    if (phone.startsWith("86")) {
-                        phone = phone.substring(2, phone.length());
-                    }
-                    phone = AppUtils.addStar(phone);
-                    tvPhone.setText("Hi, " + phone);
-                }
             }
         }
     }
@@ -614,10 +609,10 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                 showActivity(MyAssetTradeRecordActivity.class, null, 1);
                 break;
             case R.id.ll4://店铺列表
-
+                showActivity(StoreListActivity.class, null, 1);
                 break;
             case R.id.ll5://商品列表
-
+                showActivity(ProductListActivity.class, null, 1);
                 break;
             case R.id.ll6://充币
                 bundle = new Bundle();
@@ -843,14 +838,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             int orderCount = trade.getDaysBuyOrder() + trade.getDaysSellOrder();
             tvOrderCount.setText(String.valueOf(orderCount));
 
-//            double totalBuyReward = 0;
-//            double totalSellReward = 0;
-//            if (trade.getDaysBuyReward() != null) {
-//                totalBuyReward = trade.getDaysBuyReward().doubleValue();
-//            }
-//            if (trade.getDaysSellReward() != null) {
-//                totalSellReward = trade.getDaysSellReward().doubleValue();
-//            }
             String rewardMoney = (trade.getDaysBuyReward().add(trade.getDaysSellReward())).toPlainString();
             String reward = MathUtils.subZeroAndDot(MathUtils.getRundNumber2(rewardMoney, BaseConstant.MONEY_FORMAT, null));
             tvCommission.setText(reward);
@@ -1429,17 +1416,35 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                 SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, false);
                 tvAssetMoneyTrade.setText("********");
                 tvAssetMoneyTradeBail.setText("*****");
+                tvAssetAmountTrade.setText("********");
+                tvAssetMoneyTradeDj.setText("********");
+                tvAssetCommission.setText("********");
+                tvAssetCommissionY.setText("********");
+                tvAssetCommissionUn.setText("********");
+                tvMoneyTypeTag.setText("");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_close);
             } else {
                 SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, true);
                 tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)));
                 tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
+                tvAssetAmountTrade.setText(sumAmount + " " + coinId);
+                tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
+                tvAssetCommission.setText(rewardTotal);
+                tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
+                tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
+                tvMoneyTypeTag.setText(coinId);
             }
         } else {
             SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, false);
             tvAssetMoneyTrade.setText("********");
             tvAssetMoneyTradeBail.setText("*****");
+            tvAssetAmountTrade.setText("********");
+            tvAssetMoneyTradeDj.setText("********");
+            tvAssetCommission.setText("********");
+            tvAssetCommissionY.setText("********");
+            tvAssetCommissionUn.setText("********");
+            tvMoneyTypeTag.setText("");
             ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_close);
         }
     }
@@ -1456,11 +1461,28 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             AcceptMerchantInfoEntity loginEntity = gson.fromJson(gson.toJson(response), new TypeToken<AcceptMerchantInfoEntity>() {
             }.getType());
             //昨日佣金
-            String reward = MathUtils.subZeroAndDot(MathUtils.getRundNumber(loginEntity.getData().getDaysBuyReward() + loginEntity.getData().getDaysSellReward(), BaseConstant.MONEY_FORMAT, null));
-            tvAssetCommissionY.setText("昨日佣金 " + reward + " " + coinId);
+            rewardY = MathUtils.subZeroAndDot(MathUtils.getRundNumber(loginEntity.getData().getDaysBuyReward() + loginEntity.getData().getDaysSellReward(), BaseConstant.MONEY_FORMAT, null));
+            if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
+                if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
+                    tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
+                } else {
+                    tvAssetCommissionY.setText("********");
+                }
+            } else {
+                tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
+            }
             String type = loginEntity.getData().getCoin();
             if (StringUtils.isNotEmpty(type)) {
-                tvMoneyTypeTag.setText(type);
+                coinId = type;
+                if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
+                    if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
+                        tvMoneyTypeTag.setText(type);
+                    } else {
+                        tvMoneyTypeTag.setText("");
+                    }
+                } else {
+                    tvMoneyTypeTag.setText(type);
+                }
             }
         }
     }
@@ -1479,18 +1501,36 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             }
         }
         coinId = acceptMerchantFrontVo.getCoin();
-        tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
+        if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
+            if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
+                tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
+            } else {
+                tvAssetMoneyTradeBail.setText("********");
+            }
+        } else {
+            tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
+        }
     }
 
     @Override
     public void getTradeSuccess(AcceptanceMerchantListEntity response) {
         if (response != null && response.getData() != null) {
             //累计佣金
-            String reward = MathUtils.subZeroAndDot(MathUtils.getRundNumber(response.getData().getTotalBuyReward() + response.getData().getTotalSellReward(), BaseConstant.MONEY_FORMAT, null));
-            tvAssetCommission.setText(reward);
+            rewardTotal = MathUtils.subZeroAndDot(MathUtils.getRundNumber(response.getData().getTotalBuyReward() + response.getData().getTotalSellReward(), BaseConstant.MONEY_FORMAT, null));
             //待结算佣金
-            String noSettledReward = MathUtils.subZeroAndDot(MathUtils.getRundNumber(response.getData().getNoSettledReward(), BaseConstant.MONEY_FORMAT, null));
-            tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+            noSettledReward = MathUtils.subZeroAndDot(MathUtils.getRundNumber(response.getData().getNoSettledReward(), BaseConstant.MONEY_FORMAT, null));
+            if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
+                if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
+                    tvAssetCommission.setText(rewardTotal);
+                    tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+                } else {
+                    tvAssetCommission.setText("********");
+                    tvAssetCommissionUn.setText("********");
+                }
+            } else {
+                tvAssetCommission.setText(rewardTotal);
+                tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+            }
         }
     }
 

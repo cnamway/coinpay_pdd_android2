@@ -204,29 +204,29 @@ public class PayControllerModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                payControllerApi.updateStatusUsingGET(id, status, new Response.Listener<MessageResult>() {
-                    @Override
-                    public void onResponse(MessageResult response) {
-                        LogUtils.i("response==" + response.toString());
-                        int code = response.getCode();
-                        if (code == SUCCESS_CODE) {
-                            if (listener != null) {
-                                listener.onResponse(response);
-                            }
-                        } else {
-                            if (errorListener != null) {
-                                errorListener.onErrorResponse(new HttpErrorEntity(response.getCode(), response.getMessage(), response.getUrl(), response.getCid()));
-                            }
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (errorListener != null) {
-                            errorListener.onErrorResponse(error);
-                        }
-                    }
-                });
+//                payControllerApi.updateStatusUsingGE(id, status, new Response.Listener<MessageResult>() {
+//                    @Override
+//                    public void onResponse(MessageResult response) {
+//                        LogUtils.i("response==" + response.toString());
+//                        int code = response.getCode();
+//                        if (code == SUCCESS_CODE) {
+//                            if (listener != null) {
+//                                listener.onResponse(response);
+//                            }
+//                        } else {
+//                            if (errorListener != null) {
+//                                errorListener.onErrorResponse(new HttpErrorEntity(response.getCode(), response.getMessage(), response.getUrl(), response.getCid()));
+//                            }
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        if (errorListener != null) {
+//                            errorListener.onErrorResponse(error);
+//                        }
+//                    }
+//                });
             }
         }).start();
     }

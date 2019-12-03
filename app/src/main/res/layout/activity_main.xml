@@ -16,8 +16,9 @@
         <ImageView
             android:id="@+id/ivMy"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:scaleType="center"
+            android:layout_height="50dp"
+            android:padding="12dp"
+            android:scaleType="centerInside"
             android:src="@mipmap/icon_my" />
 
         <ImageView
@@ -91,29 +92,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/bg_home"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/dp_6"
-                        android:text="--"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font_normal"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/bg_home"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -137,8 +115,10 @@
 
                                 <ImageView
                                     android:id="@+id/ivAssetEyeTrade"
-                                    style="@style/style_layout_my_image"
-                                    android:layout_marginLeft="@dimen/dp_10"
+                                    style="@style/w_40"
+                                    android:layout_marginLeft="@dimen/dp_20"
+                                    android:padding="@dimen/dp_4"
+                                    android:scaleType="centerInside"
                                     android:src="@mipmap/icon_eye_open" />
 
                             </LinearLayout>
@@ -151,7 +131,7 @@
                                     android:id="@+id/tvAssetAmountTrade"
                                     style="@style/style_font_normal"
                                     android:gravity="left"
-                                    android:text="0" />
+                                    android:text="" />
 
                             </LinearLayout>
 
@@ -163,7 +143,7 @@
                                     android:id="@+id/tvAssetMoneyTrade"
                                     style="@style/style_font_normal"
                                     android:gravity="left"
-                                    android:text="0" />
+                                    android:text="" />
 
                             </LinearLayout>
 
@@ -181,7 +161,7 @@
                                     android:paddingTop="@dimen/dp_6"
                                     android:paddingRight="@dimen/dp_10"
                                     android:paddingBottom="@dimen/dp_6"
-                                    android:text="保证金 0.00 "
+                                    android:text=""
                                     android:textSize="@dimen/font_mini" />
 
                                 <TextView
@@ -193,7 +173,7 @@
                                     android:paddingTop="@dimen/dp_6"
                                     android:paddingRight="@dimen/dp_10"
                                     android:paddingBottom="@dimen/dp_6"
-                                    android:text="冻结资产 0.00 "
+                                    android:text=""
                                     android:textSize="@dimen/font_mini" />
 
                             </LinearLayout>
@@ -234,14 +214,14 @@
                                 <TextView
                                     android:id="@+id/tvAssetCommission"
                                     style="@style/style_font_normal"
-                                    android:text="0" />
+                                    android:text="" />
 
                                 <TextView
                                     android:id="@+id/tvMoneyTypeTag"
                                     style="@style/style_font_normal"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="@dimen/dp_10"
-                                    android:text="CNT" />
+                                    android:text="" />
 
                             </LinearLayout>
 
@@ -265,7 +245,7 @@
                                     android:paddingTop="@dimen/dp_6"
                                     android:paddingRight="@dimen/dp_10"
                                     android:paddingBottom="@dimen/dp_6"
-                                    android:text="昨日佣金"
+                                    android:text=""
                                     android:textSize="@dimen/font_mini" />
 
                                 <TextView
@@ -277,7 +257,7 @@
                                     android:paddingTop="@dimen/dp_6"
                                     android:paddingRight="@dimen/dp_10"
                                     android:paddingBottom="@dimen/dp_6"
-                                    android:text="待结算佣金"
+                                    android:text=""
                                     android:textSize="@dimen/font_mini" />
 
                             </LinearLayout>
@@ -532,9 +512,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shape_bg_white"
+                    android:orientation="vertical"
+                    android:paddingLeft="6dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="6dp"
+                    android:paddingBottom="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -550,9 +537,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll1" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -570,9 +556,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll2" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -590,9 +575,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll3" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -610,9 +594,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll4" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -638,9 +621,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll5" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -658,9 +640,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll6" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -678,9 +659,8 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll7" />
 
                             <TextView
                                 style="@style/style_font_normal_black"
@@ -698,9 +678,8 @@
                             android:visibility="invisible">
 
                             <ImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:src="@mipmap/ic_launcher" />
+                                style="@style/w_40"
+                                android:src="@mipmap/ll1" />
 
                             <TextView
                                 style="@style/style_font_normal_black"

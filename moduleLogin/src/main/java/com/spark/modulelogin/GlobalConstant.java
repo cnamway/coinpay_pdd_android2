@@ -74,6 +74,7 @@ public class GlobalConstant {
      * 分页
      */
     public static final int PageSize = 10;
+    public static final int PageSizeMax = 20;
 
     /**
      * webview参数

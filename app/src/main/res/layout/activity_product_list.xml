@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_head" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_20">
+
+        <LinearLayout style="@style/style_edit_login">
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                style="@style/w_40"
+                android:padding="@dimen/dp_10"
+                android:src="@mipmap/search_product" />
+
+            <EditText
+                android:id="@+id/etUsername"
+                style="@style/style_edit_login"
+                android:hint="请输入店铺名称/商品名称"
+                android:inputType="text"
+                android:paddingLeft="0dp"
+                android:text="" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/activity_common_listview" />
+
+</LinearLayout>

@@ -26,8 +26,8 @@
     <!--背景色-->
     <color name="bg_edittext">#f4f6f7</color>
     <color name="base_bg_btn_enable">#232540</color>
-    <color name="bg_home">#05BDAC</color>
-    <color name="bg_main">#F4F5F9</color>
+    <color name="bg_home">#0CBCA8</color>
+    <color name="bg_main">#F5F5FA</color>
     <color name="bg_btn_normal">#4c7af3</color>
     <color name="bg_btn_hover">#6a99e4</color>
     <color name="bg_line">#ebebeb</color>

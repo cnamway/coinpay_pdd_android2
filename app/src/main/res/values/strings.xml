@@ -507,4 +507,8 @@
     </string-array>
     <string name="str_sign_up_change_phone">请重新获取验证码</string>
     <string name="str_get_apply_data_fail">承兑商信息获取失败</string>
+    <string name="str_pay_confirm_up">确认上架</string>
+    <string name="str_pay_confirm_down">确认下架</string>
+    <string name="str_pay_confirm_open">确认启用</string>
+    <string name="str_pay_confirm_close">确认禁用</string>
 </resources>
