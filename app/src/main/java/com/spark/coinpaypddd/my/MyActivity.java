@@ -1,5 +1,6 @@
 package com.spark.coinpaypddd.my;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.spark.coinpaypddd.login.LoginActivity;
 import com.spark.coinpaypddd.my.about.AboutActivity;
 import com.spark.coinpaypddd.my.appeal.AppealActivity;
 import com.spark.coinpaypddd.my.assets.MyAssetActivity;
+import com.spark.coinpaypddd.my.credit.CreditActivity;
 import com.spark.coinpaypddd.my.myinfo.MyInfoActivity;
 import com.spark.coinpaypddd.my.order.MyOrderActivity;
 import com.spark.coinpaypddd.my.safe.SafeActivity;
@@ -52,6 +54,7 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
     CircleImageView ivHead;
     private MyPresenterImpl presenter;
     private List<Dict> dictList;
+    private int statusRealName = 0;//实名认证状态:0-未认证 1待审核 2-审核不通过  3-已认证
 
     @Override
     protected int getActivityLayoutId() {
@@ -86,7 +89,8 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
         presenter.destory();
     }
 
-    @OnClick({R.id.ivHead, R.id.ivEdit, R.id.llMyAssets, R.id.llMyOrder, R.id.llAppeal, R.id.llCdDetify, R.id.llRec, R.id.llSafe, R.id.llSetting, R.id.llAbout})
+    @OnClick({R.id.ivHead, R.id.ivEdit, R.id.llMyAssets, R.id.llMyOrder, R.id.llAppeal, R.id.llCdDetify, R.id.llRec,
+            R.id.llSafe, R.id.llSetting, R.id.llAbout, R.id.llIdCard})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -94,12 +98,13 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
             showActivity(LoginActivity.class, null);
             return;
         }
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.ivHead://个人中心
-                showActivity(MyInfoActivity.class, null);
+                //showActivity(MyInfoActivity.class, null);
                 break;
             case R.id.ivEdit://个人中心
-                showActivity(MyInfoActivity.class, null);
+                //showActivity(MyInfoActivity.class, null);
                 break;
             case R.id.llMyAssets://我的资产
                 showActivity(MyAssetActivity.class, null);
@@ -121,7 +126,6 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
                     ToastUtils.showToast(activity, getString(R.string.set_money_pwd_first));
                 }
                 break;
-
             case R.id.llSafe://安全中心
                 showActivity(SafeActivity.class, null);
                 break;
@@ -130,6 +134,11 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
                 break;
             case R.id.llAbout://关于我们
                 showActivity(AboutActivity.class, null);
+                break;
+            case R.id.llIdCard: // 实名认证
+                bundle = new Bundle();
+                bundle.putInt("NoticeType", statusRealName);
+                showActivity(CreditActivity.class, bundle, 2);
                 break;
         }
 
@@ -175,6 +184,7 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
         //实名认证状态:0-未认证 1待审核 2-审核不通过  3-已认证
         //承兑商认证状态 0：未认证 1：认证-待审核 2：认证-审核成功 3：认证-审核失败 5：退保-待审核 6：退保-审核失败 7:退保-审核成功 8:退保-已退还保证金
         if (entity != null && entity.getCode() == SUCCESS_CODE) {
+            statusRealName = entity.getData().getIsReal().getStatus();
             if (entity.getData().getIsCertified().getStatus() == 2) {
                 presenter.getLevelList();
             }
@@ -191,6 +201,14 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
         if (user != null) {
             if (StringUtils.isNotEmpty(user.getRealName())) {
                 tvName.setText(user.getRealName());
+                String phone = MyApplication.getAppContext().getCurrentUser().getMobilePhone();
+                if (StringUtils.isNotEmpty(phone)) {
+                    if (phone.startsWith("86")) {
+                        phone = phone.substring(2, phone.length());
+                    }
+                    phone = AppUtils.addStar(phone);
+                    tvLevel.setText(phone);
+                }
             } else {
                 String phone = user.getMobilePhone();
                 if (StringUtils.isNotEmpty(phone)) {
@@ -204,6 +222,7 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
             if (StringUtils.isNotEmpty(user.getAvatar())) {
                 Glide.with(this).load(user.getAvatar()).into(ivHead);
             }
+            statusRealName = user.getRealNameStatus();
         }
     }
 

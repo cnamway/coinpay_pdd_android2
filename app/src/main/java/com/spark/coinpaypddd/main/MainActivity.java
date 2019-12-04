@@ -94,6 +94,7 @@ import com.spark.modulebase.utils.ToastUtils;
 import com.spark.modulelogin.entity.CasLoginEntity;
 import com.spark.moduleotc.entity.AcceptMerchantInfoEntity;
 import com.spark.moduleotc.entity.AcceptanceMerchantListEntity;
+import com.spark.moduleotc.entity.OnlineStatus;
 import com.spark.netty_library.CMD;
 import com.spark.netty_library.ConnectCloseEvent;
 import com.spark.netty_library.GuardService;
@@ -240,6 +241,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private String noSettledReward;
     //昨日佣金
     private String rewardY;
+    private boolean isTakingOrder = false;//是否在接单
+    private boolean isConnectSuccess = false;//是否连接成功
 
     @Override
     protected int getActivityLayoutId() {
@@ -431,6 +434,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         presenter.getSelfLevelInfo();
         //查询今日接单数等数据
         presenter.findAcceptMerchantTrade();
+        //查询承兑商在线、接单状态
+        presenter.getTakingDetailUsingPOST();
     }
 
     /**
@@ -611,6 +616,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         isStart = start;
         if (tvStartOrder != null) {
             tvStartOrder.setText(isStart ? R.string.str_stop_order : R.string.str_start_order);
+            tvStartOrder.setBackgroundResource(isStart ? R.drawable.shape_bg_green_end : R.drawable.shape_bg_green_start);
         }
     }
 
@@ -695,7 +701,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
 
             String rewardMoney = (trade.getDaysBuyReward().add(trade.getDaysSellReward())).toPlainString();
             String reward = MathUtils.subZeroAndDot(MathUtils.getRundNumber2(rewardMoney, BaseConstant.MONEY_FORMAT, null));
-            tvCommission.setText(reward);
+            tvCommission.setText(MathUtils.subZeroAndDot(reward));
 
             int successCount = trade.getTotalSuccessBuyOrder() + trade.getTotalSuccessSellOrder();
             int totalCount = trade.getTotalBuyOrder() + trade.getTotalSellOrder();
@@ -777,7 +783,12 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                             startConnect();
                             break;
                         case CMD.CONNECT:
+                            isConnectSuccess = true;
                             LogUtils.e("连接11003建立成功isStart==" + isStart);
+                            if (isTakingOrder){
+                                isFirst = false;
+                                startOrder();
+                            }
                             if (isStart) {
                                 isFirst = false;
                                 startOrder();
@@ -887,27 +898,27 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             super.handleMessage(msg);
             switch (msg.what) {
                 case CMD.START_ORDER://开始接单
-                    ToastUtils.showToast(MainActivity.this, "开始接单");
+                    //ToastUtils.showToast(MainActivity.this, "开始接单");
                     changeStatus(true);
                     //订单承接通知,收到该指令，说明承兑商有订单匹配，此时需要查询在途订单
-                    getOrder();
+//                    getOrder();
                     if (isFirst) {
 //                        openRawMusic(1);
                     }
                     break;
                 case CMD.STOP_ORDER://停止接单
-                    ToastUtils.showToast(MainActivity.this, "停止接单");
+                    //ToastUtils.showToast(MainActivity.this, "停止接单");
                     changeStatus(false);
 //                    openRawMusic(2);
                     //设置界面显示状态
                     setVisiableStatus();
                     break;
                 case CMD.ACCEPT_ORDER: //订单承接通知,收到该指令，说明承兑商有订单匹配，此时需要查询在途订单
-                    getOrder();
+//                    getOrder();
 //                    openRawMusic(3);
                     break;
                 case CMD.ORDER_STATUS: //订单状态变更
-                    getOrder();
+//                    getOrder();
                     break;
                 case 205://为11时，无法支付取消
                     String message = (String) msg.obj;
@@ -1096,7 +1107,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     } else {
                         setTime(0);
                         mTimeHandler.removeCallbacks(runnable);
-                        getOrder();
+//                        getOrder();
                     }
                     break;
                 case 2://10秒刷新一次
@@ -1187,8 +1198,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
                 tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)) + " CNY");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
-                tvAssetAmountTrade.setText(sumAmount + "");
-                tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
+                tvAssetAmountTrade.setText(MathUtils.subZeroAndDot(sumAmount + ""));
+                tvAssetMoneyTradeDj.setText("冻结资产 " + MathUtils.subZeroAndDot(sumAmountDj + "") + " " + coinId);
             } else {
                 tvAssetMoneyTrade.setText("********");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_close);
@@ -1198,8 +1209,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         } else {
             tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)) + " CNY");
             ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
-            tvAssetAmountTrade.setText(sumAmount + "");
-            tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
+            tvAssetAmountTrade.setText(MathUtils.subZeroAndDot(sumAmount + ""));
+            tvAssetMoneyTradeDj.setText("冻结资产 " + MathUtils.subZeroAndDot(sumAmountDj + "") + " " + coinId);
         }
     }
 
@@ -1222,11 +1233,11 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                 SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, true);
                 tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)));
                 tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
-                tvAssetAmountTrade.setText(sumAmount + "");
-                tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
-                tvAssetCommission.setText(rewardTotal);
-                tvAssetCommissionY.setText(rewardY + "");
-                tvAssetCommissionUn.setText(noSettledReward + "");
+                tvAssetAmountTrade.setText(MathUtils.subZeroAndDot(sumAmount + ""));
+                tvAssetMoneyTradeDj.setText("冻结资产 " + MathUtils.subZeroAndDot(sumAmountDj + "") + " " + coinId);
+                tvAssetCommission.setText(MathUtils.subZeroAndDot(rewardTotal + ""));
+                tvAssetCommissionY.setText(MathUtils.subZeroAndDot(rewardY + ""));
+                tvAssetCommissionUn.setText(MathUtils.subZeroAndDot(noSettledReward + ""));
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
             }
         } else {
@@ -1257,12 +1268,12 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             rewardY = MathUtils.subZeroAndDot(MathUtils.getRundNumber(loginEntity.getData().getDaysBuyReward() + loginEntity.getData().getDaysSellReward(), BaseConstant.MONEY_FORMAT, null));
             if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
                 if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
-                    tvAssetCommissionY.setText(rewardY + "");
+                    tvAssetCommissionY.setText(MathUtils.subZeroAndDot(rewardY + ""));
                 } else {
                     tvAssetCommissionY.setText("********");
                 }
             } else {
-                tvAssetCommissionY.setText(rewardY + "");
+                tvAssetCommissionY.setText(MathUtils.subZeroAndDot(rewardY + ""));
             }
             String type = loginEntity.getData().getCoin();
             if (StringUtils.isNotEmpty(type)) {
@@ -1275,6 +1286,32 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     }
                 } else {
                     tvMoneyTypeTag.setText("总资产(" + type + ")");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void getTakingDetailUsingPOSTSuccess(MessageResult response) {
+        if (response != null && response.getData() != null) {
+            //查询承兑商在线、接单状态
+            OnlineStatus entity = new Gson().fromJson(response.getData().toString(), OnlineStatus.class);
+            if (entity != null) {
+                if (entity.getOrderTakingStatus() == 1) {
+                    isTakingOrder = true;
+                    if (!isStart) {
+                        if (isConnectSuccess) {
+                            isFirst = true;
+                            type = getString(R.string.str_duiru);
+                            takingType = 1;
+                            startOrder();
+                        }
+                    }
+                } else {//停止接单
+                    isTakingOrder = false;
+                    if (isConnectSuccess) {
+                        stopOrder();
+                    }
                 }
             }
         }
@@ -1471,7 +1508,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             @Override
             public void onDismiss(DialogInterface dialog) {
                 isShowLoading = false;
-                getOrder();
+//                getOrder();
             }
         });
         alertIosDialog.show();
@@ -1752,7 +1789,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
      */
     private void startFlush() {
         //查询在途订单
-        getOrder();
+//        getOrder();
     }
 
     /**

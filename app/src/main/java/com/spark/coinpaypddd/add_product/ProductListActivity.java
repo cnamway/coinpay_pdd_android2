@@ -20,6 +20,8 @@ import com.spark.coinpaypddd.R;
 import com.spark.coinpaypddd.adapter.ProductAdapter;
 import com.spark.coinpaypddd.base.BaseActivity;
 import com.spark.coinpaypddd.event.CheckLoginSuccessEvent;
+import com.spark.coinpaypddd.view.PhoneVertifyDialog;
+import com.spark.coinpaypddd.view.ProductDealDialog;
 import com.spark.modulebase.utils.ToastUtils;
 import com.spark.moduleotc.entity.ProductEntity;
 
@@ -107,6 +109,7 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
                 getList(false);
             }
         }, recyclerView);
+        /*
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -129,6 +132,17 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
                     }
 
                 }
+            }
+        });
+        */
+        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                ProductEntity entity = (ProductEntity) adapter.getItem(position);
+                if (entity != null) {
+                    showDealialog(entity.getId(), entity.getIsUpper());
+                }
+                return true;
             }
         });
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -160,6 +174,31 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
             }
         });
     }
+
+    //isUpper是否上架(0否,1是)
+    private void showDealialog(final Long id, int isUpper) {
+        final ProductDealDialog mPhoneVertifyDialog = new ProductDealDialog(this, isUpper);
+        mPhoneVertifyDialog.withWidthScale(0.8f);
+        mPhoneVertifyDialog.setClickListener(new ProductDealDialog.ClickLister() {
+            @Override
+            public void onCancel(int type) {
+                mPhoneVertifyDialog.dismiss();
+                if (type == 1) {
+                    showCofirmUpDialog(id, 0);
+                } else {
+                    showCofirmUpDialog(id, 1);
+                }
+            }
+
+            @Override
+            public void onConfirm() {
+                mPhoneVertifyDialog.dismiss();
+                showCofirmDialog(id);
+            }
+        });
+        mPhoneVertifyDialog.show();
+    }
+
 
     private void showCofirmDialog(final Long id) {
         final NormalDialog dialog = new NormalDialog(activity);

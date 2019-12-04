@@ -50,6 +50,8 @@ public class MainContract {
         void getTradeSuccess(AcceptanceMerchantListEntity response);
 
         void getTradeYesterdaySuccess(MessageResult response);
+
+        void getTakingDetailUsingPOSTSuccess(MessageResult response);
     }
 
     interface MainPresenter extends BaseContract.BasePresenter {
@@ -80,5 +82,7 @@ public class MainContract {
         void getSelfLevelInfo();
 
         void getTrade();
+
+        void getTakingDetailUsingPOST();
     }
 }

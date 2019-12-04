@@ -42,7 +42,8 @@
                 style="@style/style_horizon_line"
                 android:visibility="gone" />
 
-            <LinearLayout style="@style/style_layout_my_item">
+            <LinearLayout style="@style/style_layout_my_item"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/style_font_normal"
@@ -61,7 +62,7 @@
 
             </LinearLayout>
 
-            <View style="@style/style_horizon_line" />
+            <View style="@style/style_horizon_line" android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/llWrite"
@@ -117,7 +118,7 @@
                 style="@style/style_layout_my_item"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginTop="@dimen/dp_10"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/style_font_normal"
@@ -139,7 +140,7 @@
             <LinearLayout
                 style="@style/style_layout_my_item"
                 android:layout_height="30dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     style="@style/style_font_small_grey"
@@ -148,7 +149,7 @@
 
             <View
                 style="@style/style_horizon_line"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <LinearLayout
                 style="@style/style_layout_my_item"

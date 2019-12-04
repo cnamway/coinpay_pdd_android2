@@ -166,6 +166,36 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
     }
 
     @Override
+    public void getTakingDetailUsingPOST() {
+        //showLoading();
+        acceptanceMerchantControllerModel.getTakingDetailUsingPOST(new ResponseCallBack.SuccessListener<MessageResult>() {
+            @Override
+            public void onResponse(MessageResult response) {
+                hideLoading();
+                if (mainView != null) {
+                    mainView.getTakingDetailUsingPOSTSuccess(response);
+                }
+            }
+        }, new ResponseCallBack.ErrorListener() {
+            @Override
+            public void onErrorResponse(HttpErrorEntity httpErrorEntity) {
+                hideLoading();
+                if (mainView != null) {
+                    mainView.dealError(httpErrorEntity);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                hideLoading();
+                if (mainView != null) {
+                    mainView.dealError(volleyError);
+                }
+            }
+        });
+    }
+
+    @Override
     public void checkBusinessLogin(String type) {
         showLoading();
         casLoginModel.checkBusinessLogin(type, new ResponseCallBack.SuccessListener<CasLoginEntity>() {

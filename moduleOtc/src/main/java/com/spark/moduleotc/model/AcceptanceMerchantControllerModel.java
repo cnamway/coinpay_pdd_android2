@@ -413,5 +413,38 @@ public class AcceptanceMerchantControllerModel {
         }).start();
     }
 
+    /**
+     * 查询承兑商在线、接单状态
+     *
+     * @param successListener
+     * @param errorListener
+     */
+    public void getTakingDetailUsingPOST(final ResponseCallBack.SuccessListener<MessageResult> successListener, final ResponseCallBack.ErrorListener errorListener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                acceptanceMerchantControllerApi.getTakingDetailUsingPOST(new Response.Listener<MessageResult>() {
+                    @Override
+                    public void onResponse(MessageResult response) {
+                        LogUtils.i("response==" + response.toString());
+                        int code = response.getCode();
+                        if (code == SUCCESS_CODE) {
+                            if (successListener != null)
+                                successListener.onResponse(response);
+                        } else {
+                            if (errorListener != null)
+                                errorListener.onErrorResponse(new HttpErrorEntity(response.getCode(), response.getMessage(), response.getUrl(), response.getCid()));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (errorListener != null)
+                            errorListener.onErrorResponse(error);
+                    }
+                });
+            }
+        }).start();
+    }
 
 }

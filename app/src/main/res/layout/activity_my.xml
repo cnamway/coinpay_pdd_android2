@@ -8,7 +8,7 @@
         android:id="@+id/llTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@mipmap/img_bg_my_head"
+        android:background="@color/bg_home"
         android:orientation="horizontal">
 
         <ImageView
@@ -30,7 +30,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:scaleType="center"
-            android:src="@mipmap/icon_edit" />
+            android:src="@mipmap/icon_edit"
+            android:visibility="gone" />
     </LinearLayout>
 
     <ScrollView
@@ -47,7 +48,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
-                android:background="@mipmap/img_bg_my_bottom"
+                android:background="@color/bg_home"
                 android:paddingLeft="25dp"
                 android:paddingTop="15dp">
 
@@ -80,15 +81,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="-35dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/shape_bg_white"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/llMyAssets"
                     style="@style/style_layout_my_item"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -105,12 +107,14 @@
                 <ImageView
                     style="@style/style_horizon_line"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/llMyOrder"
                     style="@style/style_layout_my_item"
-                    android:layout_marginTop="@dimen/dp_4">
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -127,13 +131,14 @@
                 <ImageView
                     style="@style/style_horizon_line"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/llAppeal"
                     style="@style/style_layout_my_item"
-                     android:layout_marginTop="@dimen/dp_4"
-                    android:visibility="visible">
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -151,12 +156,12 @@
                     style="@style/style_horizon_line"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/llCdDetify"
                     style="@style/style_layout_my_item"
-                     android:layout_marginTop="@dimen/dp_4">
+                    android:layout_marginTop="10dp">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -178,8 +183,9 @@
                 <LinearLayout
                     android:id="@+id/llRec"
                     style="@style/style_layout_my_item"
+                    android:layout_marginTop="@dimen/dp_4"
                     android:layout_marginBottom="10dp"
-                     android:layout_marginTop="@dimen/dp_4">
+                    android:visibility="gone">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -193,14 +199,33 @@
                     <ImageView style="@style/icon_more" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/llIdCard"
+                    style="@style/style_layout_my_item"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        style="@style/style_layout_my_image"
+                        android:src="@mipmap/icon_my_appeal" />
+
+                    <TextView
+                        style="@style/style_textview_my"
+                        android:gravity="left"
+                        android:text="@string/str_id_credit" />
+
+                    <ImageView style="@style/icon_more" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/shape_bg_white"
                 android:orientation="vertical">
 
@@ -229,7 +254,7 @@
                 <LinearLayout
                     android:id="@+id/llSetting"
                     style="@style/style_layout_my_item"
-                     android:layout_marginTop="@dimen/dp_4">
+                    android:layout_marginTop="@dimen/dp_4">
 
                     <ImageView
                         style="@style/style_layout_my_image"
@@ -251,8 +276,8 @@
                 <LinearLayout
                     android:id="@+id/llAbout"
                     style="@style/style_layout_my_item"
-                    android:layout_marginBottom="10dp"
-                     android:layout_marginTop="@dimen/dp_4">
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         style="@style/style_layout_my_image"

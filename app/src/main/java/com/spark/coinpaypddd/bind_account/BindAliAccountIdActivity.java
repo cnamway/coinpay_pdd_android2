@@ -59,7 +59,7 @@ public class BindAliAccountIdActivity extends BaseActivity {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText(getString(R.string.str_ali_account_id_title));
-        String htm = "请打开<font color=#4c7af3>支付宝</font>获取收款id，并复制填入到文本框进行保存";
+        String htm = "请打开<font color=#0CBCA8>支付宝</font>获取收款id，并复制填入到文本框进行保存";
         tvOpenAliPay.setText(Html.fromHtml(htm));
     }
 

@@ -85,15 +85,15 @@ public class SetActivity extends BaseActivity implements SetContract.SetView {
         super.initView(saveInstance);
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getString(R.string.str_my_setting));
-        if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_VOICE)) {
-            if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_VOICE)) {
-                ivVoiceOnOff.setImageResource(R.mipmap.icon_on);
-            } else {
-                ivVoiceOnOff.setImageResource(R.mipmap.icon_off);
-            }
-        } else {
-            ivVoiceOnOff.setImageResource(R.mipmap.icon_on);
-        }
+//        if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_VOICE)) {
+//            if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_VOICE)) {
+//                ivVoiceOnOff.setImageResource(R.mipmap.icon_on);
+//            } else {
+//                ivVoiceOnOff.setImageResource(R.mipmap.icon_off);
+//            }
+//        } else {
+//            ivVoiceOnOff.setImageResource(R.mipmap.icon_on);
+//        }
 
     }
 
@@ -107,14 +107,14 @@ public class SetActivity extends BaseActivity implements SetContract.SetView {
     protected void loadData() {
         super.loadData();
 //        String apiAddress = SharedPreferencesUtil.getInstance(activity).getStringParam(SP_KEY_API_ADDRESS);
-        String apiAddress = "1024up.top";
-        if (StringUtils.isNotEmpty(apiAddress)) {
-            tvApiAddress.setText(apiAddress);
-        }
+//        String apiAddress = "1024up.top";
+//        if (StringUtils.isNotEmpty(apiAddress)) {
+//            tvApiAddress.setText(apiAddress);
+//        }
         //获取自动放行配置
-        presenter.getAutoRelease();
+//        presenter.getAutoRelease();
         //获取用户信息
-        presenter.getUserInfo();
+//        presenter.getUserInfo();
     }
 
     @Override

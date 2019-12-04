@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bg_white"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_20">
+
+        <TextView
+            style="@style/style_font_normal_weight"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:text="操作"
+            android:textSize="@dimen/font_normal" />
+
+        <ImageView
+            style="@style/style_horizon_line"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLeft"
+                style="@style/style_font_normal_weight"
+                android:background="@color/bg_home"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="下架"
+                android:textColor="@color/white" />
+
+
+            <TextView
+                android:id="@+id/tvRight"
+                style="@style/style_font_normal_weight"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/font_red"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="删除"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
