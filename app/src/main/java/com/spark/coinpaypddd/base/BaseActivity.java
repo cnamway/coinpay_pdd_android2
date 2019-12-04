@@ -83,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseCont
             default:
                 break;
         }*/
-        LogUtils.e("BaseApplication=======BaseActivity()=====flag==" + BaseApplication.flag);
+        //LogUtils.e("BaseApplication=======BaseActivity()=====flag==" + BaseApplication.flag);
         if (BaseApplication.flag == -1) {
             LogUtils.e("app被意外杀死重启App********************************************************");
             Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());

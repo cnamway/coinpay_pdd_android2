@@ -107,7 +107,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //RestartUtils.getInstance().setAppStatus(STATUS_NORMAL);
-        LogUtils.e("BaseApplication=======SplashActivity()=====flag==" + BaseApplication.flag);
+        //LogUtils.e("BaseApplication=======SplashActivity()=====flag==" + BaseApplication.flag);
         BaseApplication.flag = 0;
         super.onCreate(savedInstanceState);
         isRoot();

@@ -23,17 +23,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvAdd"
             style="@style/style_font_normal"
             android:layout_marginLeft="5dp"
             android:background="@drawable/shape_add_commission"
-            android:paddingBottom="@dimen/dp_2"
             android:paddingLeft="@dimen/sp_14"
-            android:paddingRight="@dimen/sp_14"
             android:paddingTop="@dimen/dp_2"
+            android:paddingRight="@dimen/sp_14"
+            android:paddingBottom="@dimen/dp_2"
             android:text="@string/str_add_go"
             android:textColor="@color/bg_btn_normal"
             android:textSize="@dimen/font_small" />

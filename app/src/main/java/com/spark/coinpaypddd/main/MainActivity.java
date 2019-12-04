@@ -26,7 +26,6 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +35,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.gson.Gson;
@@ -44,23 +42,23 @@ import com.google.gson.reflect.TypeToken;
 import com.spark.coinpaypddd.LoginStatus;
 import com.spark.coinpaypddd.MyApplication;
 import com.spark.coinpaypddd.R;
-import com.spark.coinpaypddd.adapter.MainOrderAdapter;
+import com.spark.coinpaypddd.acceptances.level.AcceptancesLevelActivity;
 import com.spark.coinpaypddd.add_product.ProductListActivity;
 import com.spark.coinpaypddd.add_store.StoreListActivity;
+import com.spark.coinpaypddd.bind_account.BindAccountActivity;
 import com.spark.coinpaypddd.entity.PayData;
-import com.spark.coinpaypddd.entity.SystemEntity;
 import com.spark.coinpaypddd.entity.VisionEntity;
 import com.spark.coinpaypddd.event.CheckLoginSuccessEvent;
-import com.spark.coinpaypddd.event.HasPayEvent;
 import com.spark.coinpaypddd.event.LoginoutEvent;
 import com.spark.coinpaypddd.event.MainTimeDownFinishEvent;
 import com.spark.coinpaypddd.login.LoginActivity;
 import com.spark.coinpaypddd.main.buy.BuyActivity;
-import com.spark.coinpaypddd.main.order_detail.OrderDetailActivity;
 import com.spark.coinpaypddd.my.MyActivity;
+import com.spark.coinpaypddd.my.account_pwd.AccountPwdActivity;
 import com.spark.coinpaypddd.my.assets.extract.ExtractActivity;
 import com.spark.coinpaypddd.my.assets.recharge.RechargeActivity;
 import com.spark.coinpaypddd.my.assets.record.MyAssetTradeRecordActivity;
+import com.spark.coinpaypddd.my.credit.CreditActivity;
 import com.spark.coinpaypddd.my.order.MyOrderActivity;
 import com.spark.coinpaypddd.view.AlertIosDialog;
 import com.spark.coinpaypddd.view.AppVersionDialog;
@@ -70,7 +68,6 @@ import com.spark.library.acp.model.MessageResult;
 import com.spark.library.acp.model.MessageResultAcceptMerchantTrade;
 import com.spark.library.acp.model.MessageResultPageOrderInTransitVo;
 import com.spark.library.acp.model.OrderInTransitVo;
-import com.spark.library.acp.model.PageOrderInTransitVo;
 import com.spark.moduleassets.entity.Wallet;
 import com.spark.modulebase.BaseApplication;
 import com.spark.modulebase.base.BaseConstant;
@@ -94,6 +91,7 @@ import com.spark.modulebase.utils.ToastUtils;
 import com.spark.modulelogin.entity.CasLoginEntity;
 import com.spark.moduleotc.entity.AcceptMerchantInfoEntity;
 import com.spark.moduleotc.entity.AcceptanceMerchantListEntity;
+import com.spark.moduleotc.entity.AuthenticationStatusEntity;
 import com.spark.moduleotc.entity.OnlineStatus;
 import com.spark.netty_library.CMD;
 import com.spark.netty_library.ConnectCloseEvent;
@@ -132,9 +130,11 @@ import static com.spark.coinpaypddd.GlobalConstant.TYPE_UC;
 import static com.spark.moduleassets.AssetsConstants.ACP;
 import static com.spark.moduleassets.AssetsConstants.COMMON;
 import static com.spark.modulebase.base.BaseConstant.SUCCESS_CODE;
+import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_AHTH;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_APP_NAME;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_SHOW;
 import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_VOICE;
+import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_PAY_PASS;
 
 /**
  * 主页面
@@ -183,6 +183,48 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     LinearLayout ll7;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.ivMy)
+    ImageView ivMy;
+    @BindView(R.id.ivAuthStatusRealName)
+    ImageView ivAuthStatusRealName;
+    @BindView(R.id.tvAuthStatusRealName)
+    TextView tvAuthStatusRealName;
+    @BindView(R.id.ivAuthStatusRealName2)
+    ImageView ivAuthStatusRealName2;
+    @BindView(R.id.tvAuthStatusRealNameSet)
+    TextView tvAuthStatusRealNameSet;
+    @BindView(R.id.ivAuthStatusPass)
+    ImageView ivAuthStatusPass;
+    @BindView(R.id.tvAuthStatusPass)
+    TextView tvAuthStatusPass;
+    @BindView(R.id.ivAuthStatusPass2)
+    ImageView ivAuthStatusPass2;
+    @BindView(R.id.tvAuthStatusPassSet)
+    TextView tvAuthStatusPassSet;
+    @BindView(R.id.ivAuthStatusType)
+    ImageView ivAuthStatusType;
+    @BindView(R.id.tvAuthStatusType)
+    TextView tvAuthStatusType;
+    @BindView(R.id.ivAuthStatusType2)
+    ImageView ivAuthStatusType2;
+    @BindView(R.id.tvAuthStatusTypeSet)
+    TextView tvAuthStatusTypeSet;
+    @BindView(R.id.ivAuthStatusAcceptanceMerchant)
+    ImageView ivAuthStatusAcceptanceMerchant;
+    @BindView(R.id.tvAuthStatusAcceptanceMerchant)
+    TextView tvAuthStatusAcceptanceMerchant;
+    @BindView(R.id.ivAuthStatusAcceptanceMerchant2)
+    ImageView ivAuthStatusAcceptanceMerchant2;
+    @BindView(R.id.tvAuthStatusAcceptanceMerchantSet)
+    TextView tvAuthStatusAcceptanceMerchantSet;
+    @BindView(R.id.llAuthLayout)
+    LinearLayout llAuthLayout;
+    @BindView(R.id.llMainLayout)
+    LinearLayout llMainLayout;
+    @BindView(R.id.llStopOrder)
+    LinearLayout llStopOrder;
+    @BindView(R.id.llAuthStatus)
+    LinearLayout llAuthStatus;
 
     private long lastPressTime;//首页二次返回时间
     private boolean isStart = false;//是否开始接单：true开始接单  false停止接单
@@ -422,7 +464,13 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private void getMainInfo(boolean isShow) {
         isShowLoading = isShow;
         //查询派单前实名认证、承兑商身份认证、设置资金密码、设置收款方式状态
-        //presenter.findAuthenticationStatus();
+        presenter.findAuthenticationStatus();
+    }
+
+    /**
+     * 加载数据
+     */
+    private void getData() {
         //查询交易账户
         presenter.getWallet(COMMON);
         //查询累计佣金、待结算佣金
@@ -465,7 +513,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         super.showLoading();
     }
 
-    @OnClick({R.id.ivMy, R.id.tvStartOrder, R.id.ivAssetEyeTrade, R.id.ll1, R.id.ll2, R.id.ll3, R.id.ll4, R.id.ll5, R.id.ll6, R.id.ll7})
+    @OnClick({R.id.ivMy, R.id.tvStartOrder, R.id.ivAssetEyeTrade, R.id.ll1, R.id.ll2, R.id.ll3, R.id.ll4, R.id.ll5, R.id.ll6, R.id.ll7,
+            R.id.tvAuthStatusRealNameSet, R.id.tvAuthStatusAcceptanceMerchantSet, R.id.tvAuthStatusPassSet})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -512,6 +561,29 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                 bundle = new Bundle();
                 bundle.putSerializable("wallets", walletsTrade);
                 showActivity(ExtractActivity.class, bundle, 1);
+                break;
+            case R.id.tvAuthStatusRealNameSet://实名认证-去设置
+                bundle = new Bundle();
+                bundle.putInt("NoticeType", statusRealName);
+                showActivity(CreditActivity.class, bundle, 1);
+                break;
+            case R.id.tvAuthStatusAcceptanceMerchantSet://承兑商身份认证-去设置
+                bundle = new Bundle();
+                bundle.putBoolean("isMain", true);
+                showActivity(AcceptancesLevelActivity.class, bundle, 1);
+                break;
+            case R.id.tvAuthStatusPassSet://设置资金密码-去设置
+                showActivity(AccountPwdActivity.class, null, 1);
+                break;
+            case R.id.tvAuthStatusTypeSet://设置收款方式-去设置
+                //资金密码是否设置
+                if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_PAY_PASS)) {
+                    bundle = new Bundle();
+                    bundle.putBoolean("isMain", true);
+                    showActivity(BindAccountActivity.class, bundle, 1);
+                } else {
+                    ToastUtils.showToast(activity, getString(R.string.set_money_pwd_first));
+                }
                 break;
         }
     }
@@ -785,7 +857,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                         case CMD.CONNECT:
                             isConnectSuccess = true;
                             LogUtils.e("连接11003建立成功isStart==" + isStart);
-                            if (isTakingOrder){
+                            if (isTakingOrder) {
                                 isFirst = false;
                                 startOrder();
                             }
@@ -942,6 +1014,121 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     @Override
     public void findAuthenticationStatusSuccess(String response) {
         mTimeHandler.sendEmptyMessage(5);
+        //解析认证状态数据
+        AuthenticationStatusEntity entity = new Gson().fromJson(response, AuthenticationStatusEntity.class);
+        //实名认证状态:0-未认证 1待审核 2-审核不通过  3-已认证
+        //承兑商认证状态 0：未认证 1：认证-待审核 2：认证-审核成功 3：认证-审核失败 5：退保-待审核 6：退保-审核失败 7:退保-审核成功 8:退保-已退还保证金
+        if (entity != null && entity.getCode() == SUCCESS_CODE) {
+            if (entity.getData().getIsReal().getStatus() == 3 && entity.getData().getIsCertified().getStatus() == 2
+                    && entity.getData().getIsSetPayPass().getIsCompleted() == 1) {
+
+                llAuthLayout.setVisibility(View.GONE);
+                llMainLayout.setVisibility(View.VISIBLE);
+
+                getData();
+
+            } else {
+
+                llAuthLayout.setVisibility(View.VISIBLE);
+                llMainLayout.setVisibility(View.GONE);
+                llStopOrder.setVisibility(View.GONE);
+                llAuthStatus.setVisibility(View.VISIBLE);
+
+                //实名认证
+                statusRealName = entity.getData().getIsReal().getStatus();
+                if (entity.getData().getIsReal().getStatus() == 3) {
+                    ivAuthStatusRealName.setSelected(true);
+                    tvAuthStatusRealName.setTextColor(getResources().getColor(R.color.font_main_title));
+                    ivAuthStatusRealName2.setVisibility(View.VISIBLE);
+                    tvAuthStatusRealNameSet.setVisibility(View.GONE);
+                } else {
+                    ivAuthStatusRealName.setSelected(false);
+                    tvAuthStatusRealName.setTextColor(getResources().getColor(R.color.font_grey_a5a5a5));
+                    ivAuthStatusRealName2.setVisibility(View.GONE);
+                    tvAuthStatusRealNameSet.setVisibility(View.VISIBLE);
+                    //实名认证状态:0-未认证 1待审核 2-审核不通过  3-已认证
+                    switch (entity.getData().getIsReal().getStatus()) {
+                        case 0:
+                            tvAuthStatusRealNameSet.setText(R.string.str_set);
+                            break;
+                        case 1:
+                            tvAuthStatusRealNameSet.setText(R.string.str_creditting);
+                            break;
+                        case 2:
+                            tvAuthStatusRealNameSet.setText(R.string.str_creditfail);
+                            break;
+                    }
+                }
+
+                //承兑商认证
+                if (entity.getData().getIsCertified().getStatus() == 2) {
+                    ivAuthStatusAcceptanceMerchant.setSelected(true);
+                    tvAuthStatusAcceptanceMerchant.setTextColor(getResources().getColor(R.color.font_main_title));
+                    ivAuthStatusAcceptanceMerchant2.setVisibility(View.VISIBLE);
+                    tvAuthStatusAcceptanceMerchantSet.setVisibility(View.GONE);
+                } else {
+                    ivAuthStatusAcceptanceMerchant.setSelected(false);
+                    tvAuthStatusAcceptanceMerchant.setTextColor(getResources().getColor(R.color.font_grey_a5a5a5));
+                    ivAuthStatusAcceptanceMerchant2.setVisibility(View.GONE);
+                    tvAuthStatusAcceptanceMerchantSet.setVisibility(View.VISIBLE);
+                    //承兑商认证状态 0：未认证 1：认证-待审核 2：认证-审核成功 3：认证-审核失败 5：退保-待审核 6：退保-审核失败 7:退保-审核成功 8:退保-已退还保证金
+                    switch (entity.getData().getIsCertified().getStatus()) {
+                        case 0:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_set);
+                            break;
+                        case 1:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditting);
+                            break;
+                        case 3:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditfail);
+                            break;
+                        case 5:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditting_back);
+                            break;
+                        case 6:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditting_fail);
+                            break;
+                        case 7:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditting_success);
+                            break;
+                        case 8:
+                            tvAuthStatusAcceptanceMerchantSet.setText(R.string.str_creditting_finish);
+                            break;
+
+                    }
+                }
+
+                //资金密码
+                if (entity.getData().getIsSetPayPass().getIsCompleted() == 1) {
+                    ivAuthStatusPass.setSelected(true);
+                    tvAuthStatusPass.setTextColor(getResources().getColor(R.color.font_main_title));
+                    ivAuthStatusPass2.setVisibility(View.VISIBLE);
+                    tvAuthStatusPassSet.setVisibility(View.GONE);
+                } else {
+                    ivAuthStatusPass.setSelected(false);
+                    tvAuthStatusPass.setTextColor(getResources().getColor(R.color.font_grey_a5a5a5));
+                    ivAuthStatusPass2.setVisibility(View.GONE);
+                    tvAuthStatusPassSet.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            if (entity.getData().getIsCertified().getStatus() == 2) {
+                //承兑商是否认证
+                SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_AHTH, true);
+            } else {
+                //承兑商是否认证
+                SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_AHTH, false);
+            }
+
+            if (entity.getData().getIsSetPayPass().getIsCompleted() == 1) {
+                //资金密码是否设置
+                SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_PAY_PASS, true);
+            } else {
+                //资金密码是否设置
+                SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_PAY_PASS, false);
+            }
+        }
         //开始检查版本更新
         if (!isCheckVersion) {
             isCheckVersion = true;
@@ -1083,6 +1270,10 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private void setVisiableStatus() {
         //isShort 账户余额是否不足：true不足  false正常
         if (isShort) {
+            llAuthLayout.setVisibility(View.VISIBLE);
+            llMainLayout.setVisibility(View.GONE);
+            llStopOrder.setVisibility(View.VISIBLE);
+            llAuthStatus.setVisibility(View.GONE);
         } else {
             //isHas 是否有订单：true有订单  false没有订单
             if (isHas) {
@@ -1181,6 +1372,21 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     }
                 }
             }
+
+            //判断账户余额是否不足
+            double sumTrade = 0;
+            for (Wallet coin : list) {
+                sumTrade += coin.getTotalLegalAssetBalance();
+            }
+            //isShort 账户余额是否不足：true不足  false正常
+            if (sumTrade > 0) {
+                isShort = false;
+                //查询在途订单
+//                getOrder();
+            } else {
+                isShort = true;
+            }
+            setVisiableStatus();
         }
     }
 

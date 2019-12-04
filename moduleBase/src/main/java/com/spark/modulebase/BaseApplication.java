@@ -45,7 +45,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtils.e("BaseApplication=======onCreate()=====flag==" + flag);
+        //LogUtils.e("BaseApplication=======onCreate()=====flag==" + flag);
         persistentCookieStore = new PersistentCookieStore(this);
         cookieManager = new CookieManager(persistentCookieStore, CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
