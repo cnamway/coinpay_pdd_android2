@@ -61,7 +61,7 @@ public class ProductDetailActivity extends BaseActivity {
                 tvURL.setText(entity.getGoodsUrl());
                 tvPrice.setText(entity.getNormalPrice() + " 元");
                 tvTime.setText(DateUtils.getFormatTime("yyyy-MM-dd HH:mm:ss", entity.getCtime()));
-                if (entity.getStatus() == 1) {//是否上架(0否,1是)
+                if (entity.getIsUpper() == 1) {//isUpper是否上架(0否,1是)
                     tvStatus.setText("上架");
                 } else {
                     tvStatus.setText("下架");

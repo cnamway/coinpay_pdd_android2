@@ -71,6 +71,7 @@
                 style="@style/style_font_normal_black"
                 android:layout_marginTop="10dp"
                 android:text="今日下单数"
+                android:textColor="@color/font_hint"
                 android:textSize="@dimen/font_mini" />
         </LinearLayout>
 
@@ -89,6 +90,7 @@
                 style="@style/style_font_normal_black"
                 android:layout_marginTop="10dp"
                 android:text="今日付款(元)"
+                android:textColor="@color/font_hint"
                 android:textSize="@dimen/font_mini" />
         </LinearLayout>
 
@@ -107,6 +109,7 @@
                 style="@style/style_font_normal_black"
                 android:layout_marginTop="10dp"
                 android:text="完成率"
+                android:textColor="@color/font_hint"
                 android:textSize="@dimen/font_mini" />
         </LinearLayout>
 
@@ -153,19 +156,19 @@
                 android:id="@+id/ivStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="left"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
-                android:gravity="left"
                 android:src="@mipmap/store_stop" />
 
             <ImageView
                 android:id="@+id/llDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_10"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:gravity="left"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
                 android:src="@mipmap/store_delete" />
 
         </LinearLayout>

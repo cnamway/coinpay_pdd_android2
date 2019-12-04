@@ -134,7 +134,7 @@
     <style name="style_font_normal_grey">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/font_grey_a5a5a5</item>
+        <item name="android:textColor">@color/font_hint</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 

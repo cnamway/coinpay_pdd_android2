@@ -27,7 +27,6 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -141,16 +140,12 @@ import static com.spark.modulebase.utils.SharedPreferencesUtil.SP_KEY_VOICE;
  */
 public class MainActivity extends OrderActivity implements MainContract.MainView {
 
-    @BindView(R.id.ivMy)
-    ImageView ivMy;
-    @BindView(R.id.ivOverTimeOrder)
-    ImageView ivOverTimeOrder;
-    @BindView(R.id.ivBuy)
-    ImageView ivBuy;
-    @BindView(R.id.ivAssetEyeTrade)
-    ImageView ivAssetEyeTrade;
+    @BindView(R.id.tvMoneyTypeTag)
+    TextView tvMoneyTypeTag;
     @BindView(R.id.tvAssetAmountTrade)
     TextView tvAssetAmountTrade;
+    @BindView(R.id.ivAssetEyeTrade)
+    ImageView ivAssetEyeTrade;
     @BindView(R.id.tvAssetMoneyTrade)
     TextView tvAssetMoneyTrade;
     @BindView(R.id.tvAssetMoneyTradeBail)
@@ -159,102 +154,18 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     TextView tvAssetMoneyTradeDj;
     @BindView(R.id.tvAssetCommission)
     TextView tvAssetCommission;
-    @BindView(R.id.tvMoneyTypeTag)
-    TextView tvMoneyTypeTag;
     @BindView(R.id.tvAssetCommissionY)
     TextView tvAssetCommissionY;
     @BindView(R.id.tvAssetCommissionUn)
     TextView tvAssetCommissionUn;
     @BindView(R.id.tvOrderCount)
     TextView tvOrderCount;
-    @BindView(R.id.tvOrderCountDes)
-    TextView tvOrderCountDes;
     @BindView(R.id.tvCommission)
     TextView tvCommission;
     @BindView(R.id.tvFinishRate)
     TextView tvFinishRate;
-    @BindView(R.id.tvOrderSpeed)
-    TextView tvOrderSpeed;
     @BindView(R.id.tvStartOrder)
     TextView tvStartOrder;
-    @BindView(R.id.tvAdd)
-    TextView tvAdd;
-    @BindView(R.id.tvOrderingOrNot)
-    TextView tvOrderingOrNot;
-    @BindView(R.id.ivType)
-    ImageView ivType;
-    @BindView(R.id.tvTypeCNY)
-    TextView tvTypeCNY;
-    @BindView(R.id.tvCount)
-    TextView tvCount;
-    @BindView(R.id.tvOrderCreate)
-    TextView tvOrderCreate;
-    @BindView(R.id.tvOrderCreateTime)
-    TextView tvOrderCreateTime;
-    @BindView(R.id.ivProcess)
-    ImageView ivProcess;
-    @BindView(R.id.viewProcess)
-    View viewProcess;
-    @BindView(R.id.tvPay)
-    TextView tvPay;
-    @BindView(R.id.tvPayTime)
-    TextView tvPayTime;
-    @BindView(R.id.tvRealease)
-    TextView tvRealease;
-    @BindView(R.id.tvRealeaseTime)
-    TextView tvRealeaseTime;
-    @BindView(R.id.llRelease)
-    LinearLayout llRelease;
-    @BindView(R.id.tvDirection)
-    TextView tvDirection;
-    @BindView(R.id.tvPayCount)
-    TextView tvPayCount;
-    @BindView(R.id.tvRate)
-    TextView tvRate;
-    @BindView(R.id.tvPayRefer)
-    TextView tvPayRefer;
-    @BindView(R.id.ivPayReferCopy)
-    ImageView ivPayReferCopy;
-    @BindView(R.id.ivAuthStatusRealName)
-    ImageView ivAuthStatusRealName;
-    @BindView(R.id.tvAuthStatusRealName)
-    TextView tvAuthStatusRealName;
-    @BindView(R.id.ivAuthStatusRealName2)
-    ImageView ivAuthStatusRealName2;
-    @BindView(R.id.tvAuthStatusRealNameSet)
-    TextView tvAuthStatusRealNameSet;
-    @BindView(R.id.ivAuthStatusPass)
-    ImageView ivAuthStatusPass;
-    @BindView(R.id.tvAuthStatusPass)
-    TextView tvAuthStatusPass;
-    @BindView(R.id.ivAuthStatusPass2)
-    ImageView ivAuthStatusPass2;
-    @BindView(R.id.tvAuthStatusPassSet)
-    TextView tvAuthStatusPassSet;
-    @BindView(R.id.ivAuthStatusType)
-    ImageView ivAuthStatusType;
-    @BindView(R.id.tvAuthStatusType)
-    TextView tvAuthStatusType;
-    @BindView(R.id.ivAuthStatusType2)
-    ImageView ivAuthStatusType2;
-    @BindView(R.id.tvAuthStatusTypeSet)
-    TextView tvAuthStatusTypeSet;
-    @BindView(R.id.ivAuthStatusAcceptanceMerchant)
-    ImageView ivAuthStatusAcceptanceMerchant;
-    @BindView(R.id.tvAuthStatusAcceptanceMerchant)
-    TextView tvAuthStatusAcceptanceMerchant;
-    @BindView(R.id.ivAuthStatusAcceptanceMerchant2)
-    ImageView ivAuthStatusAcceptanceMerchant2;
-    @BindView(R.id.tvAuthStatusAcceptanceMerchantSet)
-    TextView tvAuthStatusAcceptanceMerchantSet;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.tvType)
-    TextView tvType;
-    @BindView(R.id.tvStatus)
-    TextView tvStatus;
-    @BindView(R.id.llAccectOrder)
-    LinearLayout llAccectOrder;
     @BindView(R.id.ll1)
     LinearLayout ll1;
     @BindView(R.id.ll2)
@@ -306,8 +217,8 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private boolean isCheckVersion = false;//首次检测版本更新
     private boolean isNeedReconnect = false;//是否需要重连websocket
     private boolean isGoToLogin = false;//保证登录界面只跳转一次
-    private MainOrderAdapter adapter;
-    private List<OrderInTransitVo> mDatas = new ArrayList<>();
+    //    private MainOrderAdapter adapter;
+//    private List<OrderInTransitVo> mDatas = new ArrayList<>();
     private int tick = 1;//刷新列表间隔
     private int tick_flush = 15;//列表 每隔15秒加载一次数据
     private boolean isNeedReconnect504 = false;//是否504
@@ -386,15 +297,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     }
 
     @Override
-    protected void initRv() {
-        super.initRv();
-        LinearLayoutManager manager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(manager);
-        adapter = new MainOrderAdapter(R.layout.view_order_detail, mDatas);
-        adapter.bindToRecyclerView(recyclerView);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
@@ -431,19 +333,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         super.initView(saveInstance);
         String appName = SharedPreferencesUtil.getInstance(activity).getStringParam(SP_KEY_APP_NAME);
         tvTitle.setText(appName);
-        SystemEntity entity = MyApplication.getMyApplication().getSystemEntity();
-        if (entity != null) {
-            if (entity.isEnableOtcBuy()) {
-                ivBuy.setVisibility(View.INVISIBLE);
-                ivMessage.setVisibility(View.GONE);
-            } else {
-                ivBuy.setVisibility(View.GONE);
-                ivMessage.setVisibility(View.INVISIBLE);
-            }
-        } else {
-            ivBuy.setVisibility(View.INVISIBLE);
-            ivMessage.setVisibility(View.GONE);
-        }
         currentUser = MyApplication.getAppContext().getCurrentUser();
         if (currentUser != null) {
             if (StringUtils.isNotEmpty(currentUser.getRealName())) {
@@ -558,11 +447,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     @Override
     public void getOrderSuccess(List<OrderInTransitVo> list) {
         if (list == null) return;
-        if (list.size() > 0) {
-            ivOverTimeOrder.setVisibility(View.INVISIBLE);
-        } else {
-            ivOverTimeOrder.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
@@ -634,14 +518,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             @Override
             public void onRefresh() {
                 getMainInfo(false);
-            }
-        });
-
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                orderInTransit = (OrderInTransitVo) adapter.getItem(position);
-                if (orderInTransit != null) showActivity(OrderDetailActivity.class, null, 1);
             }
         });
     }
@@ -736,16 +612,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         if (tvStartOrder != null) {
             tvStartOrder.setText(isStart ? R.string.str_stop_order : R.string.str_start_order);
         }
-        if (tvStatus != null) {
-            tvStatus.setText(isStart ? R.string.str_ordering : R.string.str_not_start_order);
-        }
-        if (tvType != null) {
-            if (isStart) {
-                tvType.setText(type);
-            } else {
-                tvType.setText(R.string.str_duiru);
-            }
-        }
     }
 
     /**
@@ -759,9 +625,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         } else if (event.type.contains(TYPE_AC)) {
             presenter.checkBusinessLogin(TYPE_AC);
         }
-//        presenter.checkBusinessLogin(TYPE_OTC);
-//        presenter.checkBusinessLogin(TYPE_UC);
-//        presenter.checkBusinessLogin(TYPE_AC);
     }
 
     @Override
@@ -793,14 +656,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                 startLogin();
                 break;
             }
-            /*if ("acsid".equals(cookie.getName())) {
-                SharedPreferencesUtil.getInstance(MyApplication.getAppContext()).setAcSid(BaseApplication.getAppContext(), cookie.getValue());
-                break;
-            }
-            if ("ucsid".equals(cookie.getName())) {
-                SharedPreferencesUtil.getInstance(MyApplication.getAppContext()).setUcSid(BaseApplication.getAppContext(), cookie.getValue());
-                break;
-            }*/
         }
     }
 
@@ -846,10 +701,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             int totalCount = trade.getTotalBuyOrder() + trade.getTotalSellOrder();
             String rate = AppUtils.getRate(successCount, totalCount);
             tvFinishRate.setText(rate);
-
-            int avgTime = trade.getAvgPayTime() * trade.getTotalBuyOrder() + trade.getAvgReleaseTime() * trade.getTotalSellOrder();
-            String speed = AppUtils.getSpeed(avgTime, totalCount);
-            tvOrderSpeed.setText(speed);
         }
     }
 
@@ -858,50 +709,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
      */
     @Override
     public void findOrderInTransitSuccess(MessageResultPageOrderInTransitVo response) {
-        if (response != null) {
-            PageOrderInTransitVo data = response.getData();
-            List<OrderInTransitVo> records = data.getRecords();
-            if (records != null && records.size() > 0) {
-
-                refreshLayout.setEnabled(true);
-                refreshLayout.setRefreshing(false);
-                adapter.setEnableLoadMore(true);
-                adapter.loadMoreComplete();
-                mDatas.clear();
-                mDatas.addAll(records);
-                adapter.notifyDataSetChanged();
-                adapter.disableLoadMoreIfNotFullPage();
-
-                /*orderInTransit = records.get(0);
-                //设置倒计时
-                mTimeHandler.removeCallbacks(runnable);
-                initOrderContent(orderInTransit);
-                */
-                isHas = true;
-                if (isHasPay) {
-                    openRawMusic(4);
-                    EventBus.getDefault().post(new HasPayEvent());
-                    isHasPay = false;
-                } else {
-                    /*if (randomTime > 0) {
-                        openRawMusic(3);
-                    }*/
-                    //openRawMusic(3);
-                }
-                //查询今日接单数等数据
-                presenter.findAcceptMerchantTrade();
-                stopFlush();
-                handler_timeCurrent.sendEmptyMessageDelayed(0, tick * 1000);
-            } else {
-                isHas = false;
-                //没有订单不在刷新时间显示
-                mTimeHandler.removeMessages(2);
-                stopFlush();
-            }
-        }
-        //设置界面显示状态
-        setVisiableStatus();
-        mTimeHandler.sendEmptyMessage(5);
     }
 
     private void stopRefreshing() {
@@ -1085,19 +892,19 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     //订单承接通知,收到该指令，说明承兑商有订单匹配，此时需要查询在途订单
                     getOrder();
                     if (isFirst) {
-                        openRawMusic(1);
+//                        openRawMusic(1);
                     }
                     break;
                 case CMD.STOP_ORDER://停止接单
                     ToastUtils.showToast(MainActivity.this, "停止接单");
                     changeStatus(false);
-                    openRawMusic(2);
+//                    openRawMusic(2);
                     //设置界面显示状态
                     setVisiableStatus();
                     break;
                 case CMD.ACCEPT_ORDER: //订单承接通知,收到该指令，说明承兑商有订单匹配，此时需要查询在途订单
                     getOrder();
-                    openRawMusic(3);
+//                    openRawMusic(3);
                     break;
                 case CMD.ORDER_STATUS: //订单状态变更
                     getOrder();
@@ -1112,7 +919,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     showAlerDialog("", 2);
                     break;
                 case 207://为12时，正在打款
-                    openRawMusic(5);
+//                    openRawMusic(5);
                     break;
                 default:
                     break;
@@ -1328,17 +1135,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
      * @param randomTime
      */
     private void setTime(long randomTime) {
-        if (position == 1) {//1待付款 2待放行
-            if (tvPayTime != null)
-                tvPayTime.setText(DateUtils.getTimeDown(randomTime, DateUtils.DATE_FORMAT_2, "", DateUtils.DATE_FORMAT_3));
-        } else if (position == 2) {
-            if (tvRealeaseTime != null)
-                tvRealeaseTime.setText(DateUtils.getTimeDown(randomTime, DateUtils.DATE_FORMAT_2, "", DateUtils.DATE_FORMAT_4));
-        } else if (position == 3) {
-            if (tvPayTime != null)
-                tvPayTime.setText(DateUtils.getTimeDown(randomTime, DateUtils.DATE_FORMAT_2, "", DateUtils.DATE_FORMAT_4));
-        }
-
     }
 
     /**
@@ -1391,7 +1187,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
                 tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)) + " CNY");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
-                tvAssetAmountTrade.setText(sumAmount + " " + coinId);
+                tvAssetAmountTrade.setText(sumAmount + "");
                 tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
             } else {
                 tvAssetMoneyTrade.setText("********");
@@ -1402,7 +1198,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         } else {
             tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)) + " CNY");
             ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
-            tvAssetAmountTrade.setText(sumAmount + " " + coinId);
+            tvAssetAmountTrade.setText(sumAmount + "");
             tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
         }
     }
@@ -1415,25 +1211,23 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
                 SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, false);
                 tvAssetMoneyTrade.setText("********");
-                tvAssetMoneyTradeBail.setText("*****");
+                tvAssetMoneyTradeBail.setText("********");
                 tvAssetAmountTrade.setText("********");
                 tvAssetMoneyTradeDj.setText("********");
                 tvAssetCommission.setText("********");
                 tvAssetCommissionY.setText("********");
                 tvAssetCommissionUn.setText("********");
-                tvMoneyTypeTag.setText("");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_close);
             } else {
                 SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, true);
                 tvAssetMoneyTrade.setText("≈" + MathUtils.subZeroAndDot(MathUtils.getRundNumberForShow(sumTrade, BaseConstant.MONEY_FORMAT_ASSET, null)));
                 tvAssetMoneyTradeBail.setText("保证金 " + MathUtils.subZeroAndDot(MathUtils.getRundNumber(sumCny, BaseConstant.MONEY_FORMAT, null)) + " " + coinId);
-                tvAssetAmountTrade.setText(sumAmount + " " + coinId);
+                tvAssetAmountTrade.setText(sumAmount + "");
                 tvAssetMoneyTradeDj.setText("冻结资产 " + sumAmountDj + " " + coinId);
                 tvAssetCommission.setText(rewardTotal);
-                tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
-                tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+                tvAssetCommissionY.setText(rewardY + "");
+                tvAssetCommissionUn.setText(noSettledReward + "");
                 ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_open);
-                tvMoneyTypeTag.setText(coinId);
             }
         } else {
             SharedPreferencesUtil.getInstance(activity).setParam(activity, SP_KEY_SHOW, false);
@@ -1444,7 +1238,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             tvAssetCommission.setText("********");
             tvAssetCommissionY.setText("********");
             tvAssetCommissionUn.setText("********");
-            tvMoneyTypeTag.setText("");
             ivAssetEyeTrade.setImageResource(R.mipmap.icon_eye_close);
         }
     }
@@ -1464,24 +1257,24 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             rewardY = MathUtils.subZeroAndDot(MathUtils.getRundNumber(loginEntity.getData().getDaysBuyReward() + loginEntity.getData().getDaysSellReward(), BaseConstant.MONEY_FORMAT, null));
             if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
                 if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
-                    tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
+                    tvAssetCommissionY.setText(rewardY + "");
                 } else {
                     tvAssetCommissionY.setText("********");
                 }
             } else {
-                tvAssetCommissionY.setText("昨日佣金 " + rewardY + " " + coinId);
+                tvAssetCommissionY.setText(rewardY + "");
             }
             String type = loginEntity.getData().getCoin();
             if (StringUtils.isNotEmpty(type)) {
                 coinId = type;
                 if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
                     if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
-                        tvMoneyTypeTag.setText(type);
+                        tvMoneyTypeTag.setText("总资产(" + type + ")");
                     } else {
-                        tvMoneyTypeTag.setText("");
+                        tvMoneyTypeTag.setText("总资产");
                     }
                 } else {
-                    tvMoneyTypeTag.setText(type);
+                    tvMoneyTypeTag.setText("总资产(" + type + ")");
                 }
             }
         }
@@ -1522,14 +1315,14 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
             if (SharedPreferencesUtil.getInstance(activity).contains(SP_KEY_SHOW)) {
                 if (SharedPreferencesUtil.getInstance(activity).getBooleanParam(SP_KEY_SHOW)) {
                     tvAssetCommission.setText(rewardTotal);
-                    tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+                    tvAssetCommissionUn.setText(noSettledReward + "");
                 } else {
                     tvAssetCommission.setText("********");
                     tvAssetCommissionUn.setText("********");
                 }
             } else {
                 tvAssetCommission.setText(rewardTotal);
-                tvAssetCommissionUn.setText("待结算佣金 " + noSettledReward + " " + coinId);
+                tvAssetCommissionUn.setText(noSettledReward + "");
             }
         }
     }
@@ -1633,7 +1426,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     public void releaseOrderSuccess(MessageResult response) {
         if (response != null) {
             //自动放行成功
-            openRawMusic(6);
+//            openRawMusic(6);
             getMainInfo(false);
         }
     }
@@ -1642,7 +1435,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     public void releaseOrderFail(HttpErrorEntity httpErrorEntity) {
         if (httpErrorEntity != null) {
             //自动放行失败
-            openRawMusic(7);
+//            openRawMusic(7);
             if (StringUtils.isNotEmpty(httpErrorEntity.getMessage())) {
                 ToastUtils.showToast(activity, httpErrorEntity.getMessage());
             }
@@ -1938,14 +1731,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
      * @param event
      */
     public void onEvent(MainTimeDownFinishEvent event) {
-        if (adapter != null) {
-            if (event.randomTime < 0) {//倒计时为负数时，每隔10秒刷新一次数据
-                handler_timeCurrent.removeCallbacksAndMessages(null);
-                handler_timeCurrent.sendEmptyMessageDelayed(1, tick_flush * 1000);
-            } else {
-                startFlush();
-            }
-        }
     }
 
     //这里很重要，使用Handler的延时效果，每隔一秒刷新一下适配器，以此产生倒计时效果
@@ -1954,8 +1739,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    adapter.notifyDataSetChanged();
-                    handler_timeCurrent.sendEmptyMessageDelayed(0, tick * 1000);
                     break;
                 case 1:
                     startFlush();
@@ -1968,7 +1751,6 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
      * 开始刷新
      */
     private void startFlush() {
-        adapter.setEnableLoadMore(false);
         //查询在途订单
         getOrder();
     }

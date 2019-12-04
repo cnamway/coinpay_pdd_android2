@@ -5,10 +5,10 @@
     <color name="colorAccent">#4c7af3</color>
 
     <!--字体色-->
-    <color name="font_main_title">#313131</color>
+    <color name="font_main_title">#333333</color>
     <color name="font_main_content">#92919a</color>
     <color name="font_sec_content">#5a5d7d</color>
-    <color name="font_hint">#b0b3b9</color>
+    <color name="font_hint">#999999</color>
     <color name="font_des">#ebfeff</color>
     <color name="font_sec_title">#49444f</color>
     <color name="font_green">#5fc45d</color>

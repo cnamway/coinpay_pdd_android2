@@ -27,7 +27,6 @@
                 style="@style/style_edit_login"
                 android:hint="请输入店铺名称/商品名称"
                 android:inputType="text"
-                android:paddingLeft="0dp"
                 android:text="" />
 
         </LinearLayout>

@@ -16,7 +16,7 @@ public class ProductEntity implements Serializable {
     private Long groupId = null;
     private Long id = null;
     private Integer isStoreLimit = null;
-    private Integer isUpper = null;
+    private int isUpper;
     private Integer lastUseTime = null;
     private Integer mallId = null;
     private Integer normalPrice = null;
@@ -112,11 +112,11 @@ public class ProductEntity implements Serializable {
         this.isStoreLimit = isStoreLimit;
     }
 
-    public Integer getIsUpper() {
+    public int getIsUpper() {
         return isUpper;
     }
 
-    public void setIsUpper(Integer isUpper) {
+    public void setIsUpper(int isUpper) {
         this.isUpper = isUpper;
     }
 

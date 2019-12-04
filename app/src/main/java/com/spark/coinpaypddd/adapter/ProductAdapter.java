@@ -25,7 +25,7 @@ public class ProductAdapter extends BaseQuickAdapter<ProductEntity, BaseViewHold
         helper.setText(R.id.tvTitle, item.getGoodsName())
                 .setText(R.id.tvContent, "链接：" + item.getGoodsUrl() + "\n" + "价格：￥" + item.getNormalPrice() + "\n" + "所属店铺：" + item.getMallId());
 
-        //是否上架(0否,1是)
+        //isUpper是否上架(0否,1是)
         switch (item.getIsUpper()) {
             case 0:
                 helper.setText(R.id.tvStatus, "上架");

@@ -31,7 +31,7 @@
                     style="@style/style_font_normal_black" />
 
                 <TextView
-                    style="@style/style_font_normal_black"
+                    style="@style/style_font_normal_grey"
                     android:layout_marginTop="10dp"
                     android:text="店铺数"
                     android:textSize="@dimen/font_mini" />
@@ -49,7 +49,7 @@
                     style="@style/style_font_normal_black" />
 
                 <TextView
-                    style="@style/style_font_normal_black"
+                    style="@style/style_font_normal_grey"
                     android:layout_marginTop="10dp"
                     android:text="今日总下单数"
                     android:textSize="@dimen/font_mini" />
@@ -67,14 +67,13 @@
                     style="@style/style_font_normal_black" />
 
                 <TextView
-                    style="@style/style_font_normal_black"
+                    style="@style/style_font_normal_grey"
                     android:layout_marginTop="10dp"
                     android:text="今日总付款额"
                     android:textSize="@dimen/font_mini" />
             </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

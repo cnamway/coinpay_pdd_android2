@@ -184,7 +184,7 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
         });
     }
 
-    //是否上架(0否,1是)
+    //isUpper是否上架(0否,1是)
     private void showCofirmUpDialog(final Long id, final Integer isUpper) {
         final NormalDialog dialog = new NormalDialog(activity);
         String content = "";
