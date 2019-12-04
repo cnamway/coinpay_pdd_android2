@@ -161,7 +161,7 @@ public class MyActivity extends BaseActivity implements MyContract.MyView {
         //承兑商认证状态 0：未认证 1：认证-待审核 2：认证-审核成功 3：认证-审核失败 5：退保-待审核 6：退保-审核失败 7:退保-审核成功 8:退保-已退还保证金
         for (Dict dict : dictList) {
             if (acceptMerchantFrontVo.getMerchantType().equals(dict.getKey())) {
-                tvLevel.setText(dict.getValue());
+                //tvLevel.setText(dict.getValue());
                 break;
             }
         }

@@ -7,8 +7,8 @@ def getDate() {
     return formattedDate
 }
 
-def verName = "2.7.8"
-def versioncode = 278
+def verName = "2.7.9"
+def versioncode = 279
 
 android {
     compileSdkVersion 26
@@ -94,7 +94,7 @@ android {
 //            applicationIdSuffix "hf"
             applicationVariants.all { variant ->
                 variant.outputs.all { output ->
-                    outputFileName = "压力承兑22" + verName + ".apk"
+                    outputFileName = "压力承兑2-" + verName + ".apk"
                 }
             }
         }
