@@ -19,6 +19,7 @@ import com.geetest.sdk.Bind.GT3GeetestUtilsBind;
 import com.google.gson.Gson;
 import com.spark.coinpaypddd.R;
 import com.spark.coinpaypddd.base.BaseActivity;
+import com.spark.coinpaypddd.country.CountryActivity;
 import com.spark.coinpaypddd.entity.Captcha;
 import com.spark.coinpaypddd.utils.FormatDataUtils;
 import com.spark.coinpaypddd.view.GetImgDialog;
@@ -175,7 +176,7 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
         }
     }
 
-    @OnClick({R.id.tvGetCode, R.id.tvConfirm, R.id.tvLoginTag})
+    @OnClick({R.id.tvGetCode, R.id.tvConfirm, R.id.tvLoginTag, R.id.tvCountry})
     @Override
     protected void setOnClickListener(View v) {
         super.setOnClickListener(v);
@@ -188,6 +189,9 @@ public class ForgotPwdActivity extends BaseActivity implements ForgotPwdContract
                 break;
             case R.id.tvLoginTag:
                 finish();
+                break;
+            case R.id.tvCountry:
+                showActivity(CountryActivity.class, null, 1);
                 break;
         }
     }
