@@ -266,7 +266,7 @@ public class ProductListActivity extends BaseActivity implements ProductListCont
         name = etUsername.getText().toString().trim();
         HashMap<String, String> map = new HashMap<>();
         map.put("pageIndex", pageNo + "");
-        map.put("pageSize", GlobalConstant.PageSize + "");
+        map.put("pageSize", GlobalConstant.PageSizeMax + "");
         map.put("name", name);
         presenter.getRecordList(isShow, map);
     }

@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static com.spark.moduleassets.AssetsConstants.ACP;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 店铺列表
@@ -44,8 +49,15 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
     TextView tvCommission;
     @BindView(R.id.tvFinishRate)
     TextView tvFinishRate;
+    @BindView(R.id.ivSearch)
+    ImageView ivSearch;
+    @BindView(R.id.etUsername)
+    EditText etUsername;
+    @BindView(R.id.llSearch)
+    LinearLayout llSearch;
 
     private int pageNo = 1;
+    private String name;
     private StoreListPresenterImpl presenter;
     private ArrayList<StoreEntity> mDatas = new ArrayList<>();
     private StoreAdapter adapter;
@@ -61,6 +73,8 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
         super.initView(saveInstance);
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText("店铺列表");
+        ivMessage.setVisibility(View.VISIBLE);
+        ivMessage.setImageResource(R.mipmap.search_product);
     }
 
     @Override
@@ -70,6 +84,21 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
         recyclerView.setLayoutManager(manager);
         adapter = new StoreAdapter(mDatas);
         adapter.bindToRecyclerView(recyclerView);
+    }
+
+    @OnClick({R.id.ivMessage, R.id.ivSearch})
+    @Override
+    protected void setOnClickListener(View v) {
+        super.setOnClickListener(v);
+        Bundle bundle = null;
+        switch (v.getId()) {
+            case R.id.ivMessage://搜索
+                llSearch.setVisibility(View.VISIBLE);
+                break;
+            case R.id.ivSearch:
+                reflush();
+                break;
+        }
     }
 
     private void reflush() {
@@ -132,6 +161,22 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
                     bundle.putSerializable("data", entity);
                     showActivity(StoreDetailActivity.class, bundle);
                 }
+            }
+        });
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                reflush();
             }
         });
     }
@@ -199,9 +244,11 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
      * 获取列表
      */
     private void getList(boolean isShow) {
+        name = etUsername.getText().toString().trim();
         HashMap<String, String> map = new HashMap<>();
         map.put("pageIndex", pageNo + "");
         map.put("pageSize", GlobalConstant.PageSizeMax + "");
+        map.put("name", name);
         presenter.getRecordList(isShow, map);
     }
 
@@ -280,5 +327,12 @@ public class StoreListActivity extends BaseActivity implements StoreListContract
      */
     public void onEvent(CheckLoginSuccessEvent event) {
         getList(false);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

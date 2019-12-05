@@ -168,23 +168,16 @@ public class PddControllerModel {
         queryParamOrderInTransit.setPageSize(Integer.parseInt(params.get("pageSize")));
         //queryParamOrderInTransit.setSortFields("ctime_d");
         List<QueryCondition> queryConditions = new ArrayList<>();
-//        QueryCondition queryCondition = new QueryCondition();
-//        String name = params.get("name");
-//        if (StringUtils.isNotEmpty(name)) {
-//            queryCondition = new QueryCondition();
-//            queryCondition.setJoin("or");
-//            queryCondition.setOper(":");
-//            queryCondition.setKey("goodsName");
-//            queryCondition.setValue(name);
-//            queryConditions.add(queryCondition);
-//
-//            queryCondition = new QueryCondition();
-//            queryCondition.setJoin("or");
-//            queryCondition.setOper(":");
-//            queryCondition.setKey("mallId");
-//            queryCondition.setValue(name);
-//            queryConditions.add(queryCondition);
-//        }
+        QueryCondition queryCondition = new QueryCondition();
+        String name = params.get("name");
+        if (StringUtils.isNotEmpty(name)) {
+            queryCondition = new QueryCondition();
+            queryCondition.setJoin("or");
+            queryCondition.setOper(":");
+            queryCondition.setKey("name");
+            queryCondition.setValue(name);
+            queryConditions.add(queryCondition);
+        }
         queryParamOrderInTransit.setQueryList(queryConditions);
         new Thread(new Runnable() {
             @Override

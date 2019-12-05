@@ -75,6 +75,27 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llSearch"
+            style="@style/style_edit_login"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                style="@style/w_40"
+                android:padding="@dimen/dp_10"
+                android:src="@mipmap/search_product" />
+
+            <EditText
+                android:id="@+id/etUsername"
+                style="@style/style_edit_login"
+                android:hint="请输入店铺名称"
+                android:inputType="text"
+                android:text="" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <include layout="@layout/activity_common_listview" />
