@@ -285,6 +285,7 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
     private String rewardY;
     private boolean isTakingOrder = false;//是否在接单
     private boolean isConnectSuccess = false;//是否连接成功
+    private int count504 = 1;//记录504错误次数，连续超过3次，则退出登录
 
     @Override
     protected int getActivityLayoutId() {
@@ -886,18 +887,21 @@ public class MainActivity extends OrderActivity implements MainContract.MainView
                     String msg = jsonObject.optString("message");
                     if (StringUtils.isNotEmpty(msg)) {
                         if (msg.contains("NOLOGIN_ERROR")) {
-                            if (!isTokenUnUsed) {
-                                /*LogUtils.e("504==退出登录=====");
+                            count504++;
+                            LogUtils.e("504错误次数，连续超过3次，则退出登录==退出登录===count504==" + count504);
+                            if (count504 > 3) {
+                                LogUtils.e("504错误次数，连续超过3次，则退出登录==退出登录===count504==" + count504);
+                                ToastUtils.showToast(getResources().getString(R.string.ws_connect_invalid));
                                 isTokenUnUsed = true;
-                                presenter.loginOut();*/
-                                if (!isNeedReconnect504) {
-                                    isNeedReconnect504 = true;
-                                    presenter.checkBusinessLogin(TYPE_OTC);
+                                presenter.loginOut();
+                            } else {
+                                if (!isTokenUnUsed) {
+                                    if (!isNeedReconnect504) {
+                                        isNeedReconnect504 = true;
+                                        presenter.checkBusinessLogin(TYPE_OTC);
+                                    }
                                 }
                             }
-//                            isNeedReconnect = true;
-//                            reconnect();
-
                         } else {
                             startLogin();
                         }
