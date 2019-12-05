@@ -79,7 +79,7 @@
             android:id="@+id/llSearch"
             style="@style/style_edit_login"
             android:layout_marginTop="@dimen/dp_10"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/ivSearch"
